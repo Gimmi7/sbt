@@ -1,0 +1,1 @@
+const MyToken = artifacts.require("MyToken")

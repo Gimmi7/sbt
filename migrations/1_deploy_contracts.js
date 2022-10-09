@@ -22,6 +22,6 @@ const MyTokenProxy = artifacts.require('MyTokenProxy');
 module.exports = async function (deployer) {
   const logic = await deployer.deploy(MyToken)
   console.log("MyToken address=", MyToken.address)
-  const proxy = await deployer.deploy(MyTokenProxy, MyToken.address, [])
+  const proxy = await deployer.deploy(MyTokenProxy, MyToken.address, 0x8129fc1c)
   console.log("proxy address=", MyTokenProxy.address)
 }

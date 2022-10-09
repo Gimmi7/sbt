@@ -16,6 +16,7 @@
     "@openzeppelin/contracts-upgradeable": "^4.8.0-rc.1",
     "@truffle/hdwallet-provider": "^2.0.17",
     "dotenv": "^16.0.3",
+    "ethers": "^5.7.1",
     "truffle-plugin-verify": "^0.5.30"
   },
   "devDependencies": {
