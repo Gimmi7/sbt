@@ -159,11 +159,11 @@
 			]
 		},
 		"contracts/MyTokenProxy.sol": {
-			"keccak256": "0xc32ebeed0663ed2068fd8a49703dd499bd4da9effb5e8de1e625c4754ccb4652",
-			"license": "MIT",
+			"keccak256": "0xbdef8cecca6835b811d843f6b41783c4686d92c7aed2f21e757c91a123b07b47",
+			"license": "Apache-2.0",
 			"urls": [
-				"bzz-raw://3fd293900a20624d0c3ee5334e64133e8045a35748bac3be58a36a64b6aa5608",
-				"dweb:/ipfs/QmXUJr3YgQLXiCmgqCmncecvbanvNPTQxcp2vQe3EfexSD"
+				"bzz-raw://231995d8d43eb238c66ae430ff61fdbaa2de2233a93a9ec1af994126f2722914",
+				"dweb:/ipfs/QmPmbVWEyZeASbh551psvAEzWaTHmEjPLi9szAMRpSec2a"
 			]
 		}
 	},
