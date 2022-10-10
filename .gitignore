@@ -1,5 +1,5 @@
 build
-contracts/artifacts
+contracts/artifacts/
 .env
 node_modules
 
