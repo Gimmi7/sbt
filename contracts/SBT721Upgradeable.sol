@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.4;
+pragma solidity ^0.8.17;
 
 import "@openzeppelin/contracts-upgradeable/token/ERC721/IERC721Upgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/token/ERC721/IERC721ReceiverUpgradeable.sol";
@@ -127,23 +127,19 @@ abstract contract SBT721Upgradeable is Initializable, ISBT721 {
     function tokenIdOf(address from) external view override returns (uint256) {
         require(from != address(0), "Address is empty");
         uint256 tokenId = _tokenMap[from];
-        require(tokenId != 0, "The wallet has not attested and SBT");
+        require(tokenId != 0, "The wallet has not attested any SBT");
         return tokenId;
     }
 
-    function _beforeTokenTransfer(
-        address from,
-        address to,
-        uint256 tokenId
-    ) internal virtual {}
+    function _acceccControl(bytes4 selector) internal virtual {}
 
     function burn() external override {
+        _acceccControl(this.burn.selector);
+
         address sender = msg.sender;
 
         uint256 tokenId = _tokenMap[sender];
         require(tokenId != 0, "The account does not have any SBT");
-
-        _beforeTokenTransfer(sender, address(0), tokenId);
 
         delete _owners[tokenId];
         delete _tokenMap[sender];
@@ -154,12 +150,12 @@ abstract contract SBT721Upgradeable is Initializable, ISBT721 {
     }
 
     function revoke(address from) external override {
+        _acceccControl(this.revoke.selector);
+
         require(from != address(0), "Address is empty");
 
         uint256 tokenId = _tokenMap[from];
         require(tokenId != 0, "The account does not have any SBT");
-
-        _beforeTokenTransfer(from, address(0), tokenId);
 
         delete _owners[tokenId];
         delete _tokenMap[from];
@@ -170,13 +166,13 @@ abstract contract SBT721Upgradeable is Initializable, ISBT721 {
     }
 
     function attest(address to) external override returns (uint256) {
+        _acceccControl(this.attest.selector);
+
         require(to != address(0), "Address is empty");
         require(balanceOf(to) == 0, "SBT already exists");
 
         _tokenId.increment();
         uint256 tokenId = _tokenId.current();
-
-        _beforeTokenTransfer(address(0), to, tokenId);
 
         require(
             _checkOnERC721Received(address(0), to, tokenId, ""),
@@ -192,9 +188,11 @@ abstract contract SBT721Upgradeable is Initializable, ISBT721 {
         return tokenId;
     }
 
-    function _supportsInterface(bytes4 interfaceId)
-        internal
-        pure
+    function supportsInterface(bytes4 interfaceId)
+        public
+        view
+        virtual
+        override
         returns (bool)
     {
         return

@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.4;
+pragma solidity ^0.8.17;
 
 import "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/access/AccessControlEnumerableUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "./LogicStorage.sol";
@@ -14,7 +14,7 @@ contract SBT is
     SBT721Upgradeable,
     PausableUpgradeable,
     OwnableUpgradeable,
-    AccessControlEnumerableUpgradeable,
+    AccessControlUpgradeable,
     UUPSUpgradeable,
     LogicStorage
 {
@@ -48,21 +48,29 @@ contract SBT is
         onlyProxy
     {}
 
-    function _beforeTokenTransfer(
-        address from,
-        address to,
-        uint256 tokenId
-    ) internal override whenNotPaused onlyRole(OPERATOR_ROLE) {}
+    function _acceccControl(bytes4 selector)
+        internal
+        view
+        override
+        whenNotPaused
+    {
+        if (
+            SBT721Upgradeable.revoke.selector == selector ||
+            SBT721Upgradeable.attest.selector == selector
+        ) {
+            super._checkRole(OPERATOR_ROLE);
+        }
+    }
 
     function supportsInterface(bytes4 interfaceId)
         public
         view
-        override(AccessControlEnumerableUpgradeable, ISBT721)
+        override(AccessControlUpgradeable, SBT721Upgradeable)
         returns (bool)
     {
         return
-            super.supportsInterface(interfaceId) ||
-            super._supportsInterface(interfaceId);
+            AccessControlUpgradeable.supportsInterface(interfaceId) ||
+            SBT721Upgradeable.supportsInterface(interfaceId);
     }
 
     function setBaseTokenURI(string calldata uri) public onlyOwner onlyProxy {
