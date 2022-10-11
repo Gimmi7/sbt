@@ -6,8 +6,9 @@ import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
-import "./LogicStorage.sol";
 import "./SBT721Upgradeable.sol";
+import "./LogicStorage.sol";
+
 
 contract SBT is
     Initializable,
@@ -27,6 +28,7 @@ contract SBT is
         __SBT721_init("ShareSBT", "ShareSBT");
         __Pausable_init();
         __Ownable_init();
+        __AccessControl_init();
         __UUPSUpgradeable_init();
         // grant role
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
